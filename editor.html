@@ -21,11 +21,7 @@
       button.onclick = () => {
           const text = editor.value;
           if (isJson(text)) {
-              const openReq = indexedDB.open("startpage");
-              openReq.onupgradeneeded = (e) => {
-                  const db = e.target.result;
-                  db.createObjectStore("contentStore", JSON.parse(text));
-              };
+              localStorage.setItem('contents', text);
           }
       };
 
