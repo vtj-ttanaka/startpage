@@ -3,9 +3,17 @@
   <head>
     <title>Editor</title>
   </head>
+  <style>
+    .ok {
+        color: green;
+    }
+    .ng {
+        color: red;
+    }
+  </style>
   <body>
     <textarea id="jsonEditor" rows="40" cols="100"></textarea><br>
-    <button id="saveButton">save</button>
+    <div id="status"></div>
 
     <script>
       const isJson = text => {
@@ -17,27 +25,38 @@
           return true;
       };
 
-      const button = document.getElementById("saveButton");
-      button.onclick = () => {
-          const text = editor.value;
-          if (isJson(text)) {
-              localStorage.setItem('contents', text);
-          }
-      };
-
       const editor = document.getElementById("jsonEditor");
+      const status = document.getElementById("status");
       let timer = 0;
       editor.oninput = () => {
+          status.innerHTML = '<p></p>';
           if (timer) { clearTimeout(timer); }
-          timer = setTimeout(() => { button.disabled = !isJson(editor.value); }, 700);
+          timer = setTimeout(() => {
+              if (isJson(editor.value)) {
+                  editor.value = JSON.stringify(JSON.parse(editor.value), null, 2);
+                  localStorage.setItem('contents', editor.value);
+                  status.innerHTML = '<p class="ok">save</p>';
+              } else {
+                  status.innerHTML = '<p class="ng">json parse error</p>';
+              }
+          }, 700);
       };
 
       let contents = localStorage.getItem("contents");
-      if (contents) {
-          if (isJson(contents)) {
-              editor.value = contents;
-              button.disabled = false;
-          }
+      if (contents && isJson(contents)) {
+          editor.value = JSON.stringify(JSON.parse(contents), null, 2);
+      } else {
+          const example = {
+              "GitHub": {
+                  "startpage": "https://github.com/vtj-ttanaka/startpage"
+              },
+              "Reddit": {
+                  "r/unixporn": "https://reddit.com/r/unixporn/",
+                  "r/startpages": "https://www.reddit.com/r/startpages/"
+              }
+          };
+          editor.value = JSON.stringify(example, null, 2);
+          console.log(JSON.stringify(example));
       }
     </script>
   </body>
