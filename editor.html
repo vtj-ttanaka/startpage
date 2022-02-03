@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Editor</title>
+  </head>
+  <body>
+    <textarea id="jsonEditor" rows="40" cols="100"></textarea><br>
+    <button id="saveButton">save</button>
+
+    <script>
+      const isJson = text => {
+          try {
+              JSON.parse(text);
+          } catch (e) {
+              return false;
+          }
+          return true;
+      };
+
+      const button = document.getElementById("saveButton");
+      button.onclick = () => {
+          const text = editor.value;
+          if (isJson(text)) {
+              const openReq = indexedDB.open("startpage");
+              openReq.onupgradeneeded = (e) => {
+                  const db = e.target.result;
+                  db.createObjectStore("contentStore", JSON.parse(text));
+              };
+          }
+      };
+
+      const editor = document.getElementById("jsonEditor");
+      let timer = 0;
+      editor.oninput = () => {
+          if (timer) { clearTimeout(timer); }
+          timer = setTimeout(() => { button.disabled = !isJson(editor.value); }, 700);
+      };
+
+      let contents = localStorage.getItem("contents");
+      if (contents) {
+          if (isJson(contents)) {
+              editor.value = contents;
+              button.disabled = false;
+          }
+      }
+    </script>
+  </body>
+</html>

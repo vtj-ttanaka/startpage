@@ -9,27 +9,18 @@
   <body>
     <div class="container">
       <div class="bookmarks">
-      <script>
-        const contents = {
-            "GitHub": {
-                "gist": "https://gist.github.com",
-                "life": "https://github.com/vtj-ttanaka/life/issues",
-                "work": "https://github.com/vtj-ttanaka/work/issues",
-            },
-            "Reddit": {
-                "unixporn": "https://reddit.com/r/unixporn/",
-                "commandline": "https://reddit.com/r/commandline/",
-                "LLL": "https://www.reddit.com/r/lowlevelaware/",
-                "Next Fucking Level": "https://www.reddit.com/r/nextfuckinglevel/",
-            }
-        };
-        for (let c in contents) {
-            document.write('<div class="square"><div class="square-header">' + c + '</div>');
-            for (let v in contents[c]) {
-                document.write('<a href="' + contents[c][v] + '">' + v + '</a>');
-            }
-            document.write('</div>');
-        }
+        <script>
+          const contents = JSON.parse(localStorage.getItem('contents'));
+          console.log(contents);
+          if (contents) {
+              for (let c in contents) {
+                  document.write('<div class="square"><div class="square-header">' + c + '</div>');
+                  for (let v in contents[c]) {
+                      document.write('<a href="' + contents[c][v] + '">' + v + '</a>');
+                  }
+                  document.write('</div>');
+              }
+          }
         </script>
       </div>
     </div>
