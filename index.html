@@ -11,6 +11,7 @@
       <div class="bookmarks">
         <script>
           let contents = JSON.parse(localStorage.getItem('contents'));
+          console.log(contents);
           if (contents === null) {
               contents = {
                   "GitHub": {
