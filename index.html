@@ -10,16 +10,25 @@
     <div class="container">
       <div class="bookmarks">
         <script>
-          const contents = JSON.parse(localStorage.getItem('contents'));
-          console.log(contents);
-          if (contents) {
-              for (let c in contents) {
-                  document.write('<div class="square"><div class="square-header">' + c + '</div>');
-                  for (let v in contents[c]) {
-                      document.write('<a href="' + contents[c][v] + '">' + v + '</a>');
+          let contents = JSON.parse(localStorage.getItem('contents'));
+          if (contents === null) {
+              contents = {
+                  "GitHub": {
+                      "startpage": "https://github.com/vtj-ttanaka/startpage"
+                  },
+                  "Reddit": {
+                      "unixporn": "https://reddit.com/r/unixporn",
+                      "startpages": "https://reddit.com/r/startpages"
                   }
-                  document.write('</div>');
               }
+              localStorage.getItem('contents', JSON.stringify(contents));
+          }
+          for (let c in contents) {
+              document.write('<div class="square"><div class="square-header">' + c + '</div>');
+              for (let v in contents[c]) {
+                  document.write('<a href="' + contents[c][v] + '">' + v + '</a>');
+              }
+              document.write('</div>');
           }
         </script>
       </div>
