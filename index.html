@@ -25,7 +25,7 @@
                       "startpage editor": "./editor.html"
                   }
               }
-              localStorage.getItem('contents', JSON.stringify(contents));
+              localStorage.setItem('contents', JSON.stringify(contents));
           }
           for (let c in contents) {
               document.write('<div class="square"><div class="square-header">' + c + '</div>');
